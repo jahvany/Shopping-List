@@ -46,6 +46,6 @@ class ShoppingListInteractorImpl(
     }
 
     override suspend fun deleteAllShoppingLists() {
-        repository.deleteAllShoppingLists()
+        repository.deleteAllShoppingLists(login = authRepository.currentUser())
     }
 }

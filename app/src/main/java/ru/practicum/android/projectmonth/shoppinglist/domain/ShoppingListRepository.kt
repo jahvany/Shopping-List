@@ -9,5 +9,5 @@ interface ShoppingListRepository {
     suspend fun updateShoppingList(id: Long, shoppingList: ShoppingList, login: String): ShoppingList
     suspend fun saveNewShoppingList(shoppingList: ShoppingList, login: String): ShoppingList
     suspend fun deleteShoppingList(shoppingList: ShoppingList)
-    suspend fun deleteAllShoppingLists()
+    suspend fun deleteAllShoppingLists(login: String)
 }
