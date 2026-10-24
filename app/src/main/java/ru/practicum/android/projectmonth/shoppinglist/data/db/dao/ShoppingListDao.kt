@@ -31,8 +31,8 @@ interface ShoppingListDao {
     @Query("DELETE FROM shopping_list WHERE id = :id")
     suspend fun deleteById(id: Long): Int
 
-    @Query("DELETE FROM shopping_list")
-    suspend fun deleteAll(): Int
+    @Query("DELETE FROM shopping_list WHERE login = :login")
+    suspend fun deleteAll(login: String): Int
 
     @Delete
     suspend fun delete(shoppingList: ShoppingListEntity): Int
