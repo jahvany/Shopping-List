@@ -2,6 +2,8 @@ package ru.practicum.android.projectmonth.shoppinglist.ui.screens.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,6 +51,13 @@ fun LoginScreen(
 
     var errorMsg by rememberSaveable { mutableStateOf("") }
     val state by viewModel.authState.collectAsStateWithLifecycle()
+
+    val onLogin: () -> Unit = {
+        if (activePwdAndButtonElements) {
+            viewModel.login(email, password)
+        }
+    }
+
     when(state) {
         is UiSecurityState.Default -> { errorMsg = "" }
         is UiSecurityState.Loading -> { errorMsg = "" }
@@ -89,6 +100,11 @@ fun LoginScreen(
                 placeholderResId = R.string.enter_password,
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { onLogin() }),
                 includeClearIcon = true
             )
             if (errorMsg.isNotBlank()) {
@@ -116,9 +132,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
         TextButton(
             enabled = activePwdAndButtonElements,
-            onClick = {
-                viewModel.login(email, password)
-            }) {
+            onClick = onLogin
+        ) {
 
             Text(
                 text = stringResource(R.string.enter_in_shoppinglist),
