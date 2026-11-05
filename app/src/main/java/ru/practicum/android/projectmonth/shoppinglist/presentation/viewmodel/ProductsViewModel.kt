@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.Product
 import ru.practicum.android.projectmonth.shoppinglist.domain.usecaces.AuthInteractor
@@ -48,9 +48,6 @@ class ProductsViewModel(
         productsJob?.cancel()
 
         productsJob = viewModelScope.launch {
-            val shoppingListFlow = shoppingListInteractor.getShoppingListById(shoppingListId)
-            val productsFlow = productInteractor.getProductsByShoppingListId(shoppingListId)
-
             // Получение подсказок в отдельной корутине
             launch {
                 productInteractor
@@ -60,12 +57,13 @@ class ProductsViewModel(
                     }
             }
 
-            combine(shoppingListFlow, productsFlow) { list, products ->
-                shoppingList = list
-                currentSortType = SortType.entries.find { it.index == list?.sortType } ?: SortType.NONE
+            val list = shoppingListInteractor.getShoppingListById(shoppingListId).first()
+            shoppingList = list
+            currentSortType = SortType.entries.find { it.index == list?.sortType } ?: SortType.NONE
 
-                applySort(products)
-            }.collect { sortedProducts ->
+            productInteractor.getProductsByShoppingListId(shoppingListId).collect { products ->
+                val sortedProducts = applySort(products)
+
                 uiState = if (sortedProducts.isNotEmpty()) {
                     ProductsState.Content(data = sortedProducts)
                 } else {
@@ -158,7 +156,17 @@ class ProductsViewModel(
             uiState = currentState.copy(data = applySort(products))
         }
 
-        updateShoppingListSortType()
+        viewModelScope.launch {
+            updateShoppingListSortType(sortType)
+            if (sortType == SortType.ALPHABETICAL
+                && currentSortType == sortType) { // На случай, если сортировка снова была изменена
+
+                val latestState = uiState
+                if (latestState is ProductsState.Content) {
+                    updateProductsPositions(latestState.data)
+                }
+            }
+        }
     }
 
     fun moveProduct(from: Int, to: Int) {
@@ -169,15 +177,17 @@ class ProductsViewModel(
                 add(to, removeAt(from))
             }
 
-            updateProductsPositions(products)
+            viewModelScope.launch {
+                updateProductsPositions(products)
+            }
 
             uiState = currentState.copy(data = products)
         }
     }
 
-    private fun updateProductsPositions(products: List<Product>) {
-        viewModelScope.launch {
-            products.forEachIndexed { index, product ->
+    private suspend fun updateProductsPositions(products: List<Product>) {
+        products.forEachIndexed { index, product ->
+            if (product.sortPosition != index) {
                 productInteractor.updateProduct(
                     id = product.id,
                     product = product.copy(
@@ -188,13 +198,13 @@ class ProductsViewModel(
         }
     }
 
-    private fun updateShoppingListSortType() {
+    private suspend fun updateShoppingListSortType(sortType: SortType) {
         shoppingList?.let { list ->
-            viewModelScope.launch {
-                shoppingListInteractor.updateShoppingList(
-                    id = shoppingListId,
-                    shoppingList = list.copy(sortType = currentSortType.index)
-                ).collect {  }
+            shoppingListInteractor.updateShoppingList(
+                id = shoppingListId,
+                shoppingList = list.copy(sortType = sortType.index)
+            ).collect { updatedList ->
+                shoppingList = updatedList
             }
         }
     }
