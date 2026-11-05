@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -44,6 +46,7 @@ import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.compon
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.products_list.ProductsList
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.DeleteConfirmationDialog
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.BottomSheetPeach
+import kotlin.math.roundToInt
 
 // Используется только здесь, нет необходимости выносить в тему
 val productListDividerColor = Color(0xFFCAC4D0)
@@ -92,21 +95,19 @@ fun ProductsScreen(
         }
     }
 
-    // Смещение кнопки вверх при открытии диалога
-    val fabOffset by remember(isBottomSheetVisible) {
-        derivedStateOf {
-            if (isBottomSheetVisible) {
-                scaffoldState.bottomSheetState.requireOffset()
-            } else 0f
-        }
-    }
+    // Высота контейнера для расчета смещения кнопки добавления/подтверждения
+    var containerHeightPx by remember { mutableIntStateOf(0) }
 
     // Обработка кликов по фону при открытом диалоге
     val onDarkBackgroundTap = {
         scope.launch { scaffoldState.bottomSheetState.hide() }
     }
 
-    Box(Modifier.fillMaxSize()) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .onSizeChanged { containerHeightPx = it.height }
+    ) {
         BottomSheetScaffold(
             topBar = {
                 // Верхняя панель
@@ -227,11 +228,12 @@ fun ProductsScreen(
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
                 .offset {
-                    if (fabOffset > 0) {
-                        IntOffset(0, -(fabOffset * 0.3f).toInt())
-                    } else {
-                        IntOffset(0, 0)
+                    val sheetTop = try {
+                        scaffoldState.bottomSheetState.requireOffset()
+                    } catch (_: IllegalStateException) {
+                        containerHeightPx.toFloat()
                     }
+                    IntOffset(0, (sheetTop - containerHeightPx).coerceAtMost(0f).roundToInt())
                 }
         )
 
