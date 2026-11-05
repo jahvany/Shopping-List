@@ -46,7 +46,6 @@ import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.compon
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.products_list.ProductsList
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.DeleteConfirmationDialog
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.BottomSheetPeach
-import kotlin.math.roundToInt
 
 // Используется только здесь, нет необходимости выносить в тему
 val productListDividerColor = Color(0xFFCAC4D0)
@@ -233,7 +232,7 @@ fun ProductsScreen(
                     } catch (_: IllegalStateException) {
                         containerHeightPx.toFloat()
                     }
-                    IntOffset(0, (sheetTop - containerHeightPx).coerceAtMost(0f).roundToInt())
+                    IntOffset(0, (sheetTop - containerHeightPx).coerceAtMost(0f).toInt())
                 }
         )
 
