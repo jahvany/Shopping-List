@@ -28,6 +28,13 @@ open class AuthViewModel(
     private val _recoveryPasswdState = MutableStateFlow<UiSecurityState>(Default)
     val recoveryPasswdState: StateFlow<UiSecurityState> = _recoveryPasswdState.asStateFlow()
 
+    var currentUser: String = ""
+        private set
+
+    init {
+        restoreSession()
+    }
+
     fun isValidEmail(email: String): Boolean {
         return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
@@ -59,6 +66,22 @@ open class AuthViewModel(
                 .collect {
                     resolveSecurityState(it, _recoveryPasswdState)
                 }
+        }
+    }
+
+    fun logout() {
+        interactor.logout()
+    }
+
+    private fun restoreSession() {
+        viewModelScope.launch {
+            val result = interactor.restoreSession()
+
+            if (result is SecurityState.SuccessAuth) {
+                currentUser = interactor.currentUser()
+            }
+
+            resolveSecurityState(result, _authState)
         }
     }
 

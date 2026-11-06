@@ -32,8 +32,14 @@ class AuthInteractorImpl(
     }
         .flowOn(Dispatchers.IO)
 
+    override fun logout() {
+        repository.logout()
+    }
+
     override suspend fun currentUser(): String {
         return repository.currentUser()
     }
+
+    override suspend fun restoreSession(): SecurityState = repository.restoreSession()
 
 }

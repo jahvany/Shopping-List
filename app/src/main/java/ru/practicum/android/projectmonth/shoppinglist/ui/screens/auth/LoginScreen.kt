@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -49,8 +50,8 @@ fun LoginScreen(
     var password by rememberSaveable  { mutableStateOf("") }
     var activePwdAndButtonElements by rememberSaveable  { mutableStateOf(false) }
 
-    var errorMsg by rememberSaveable { mutableStateOf("") }
     val state by viewModel.authState.collectAsStateWithLifecycle()
+    val errorMsg = (state as? UiSecurityState.Error)?.errMsg.orEmpty()
 
     val onLogin: () -> Unit = {
         if (activePwdAndButtonElements) {
@@ -58,11 +59,8 @@ fun LoginScreen(
         }
     }
 
-    when(state) {
-        is UiSecurityState.Default -> { errorMsg = "" }
-        is UiSecurityState.Loading -> { errorMsg = "" }
-        is UiSecurityState.Error -> { errorMsg = (state as UiSecurityState.Error).errMsg}
-        is UiSecurityState.Success -> {
+    LaunchedEffect(state) {
+        if (state is UiSecurityState.Success) {
             navController.navigate(Destination.ShoppingLists.route)
             viewModel.refreshStates()
         }

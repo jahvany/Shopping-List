@@ -20,8 +20,16 @@ class MockAuthInteractor : AuthInteractor {
         emit(SecurityState.Default)
     }
 
+    override fun logout() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun currentUser(): String {
         return "user@test.com"
+    }
+
+    override suspend fun restoreSession(): SecurityState {
+        TODO("Not yet implemented")
     }
 
 }
