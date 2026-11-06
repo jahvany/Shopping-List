@@ -13,7 +13,7 @@ interface AuthRepository {
     fun currentUser(): String
     fun refreshAccessToken(): Flow<SecurityState>
     fun checkAuthorization(): Flow<SecurityState>
+    fun logout()
 
-
-
+    suspend fun restoreSession(): SecurityState
 }

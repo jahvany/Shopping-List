@@ -111,6 +111,23 @@ class AuthRepositoryImpl(
     }
         .flowOn(Dispatchers.IO)
 
+    override fun logout() {
+        sharedPreferences.edit {
+            remove(ACCESS_TOKEN)
+            remove(REFRESH_TOKEN)
+            remove(LOGIN)
+        }
+    }
+
+    override suspend fun restoreSession(): SecurityState {
+        val refreshToken = sharedPreferences.getString(REFRESH_TOKEN, null)
+
+        return if (refreshToken == null) {
+            SecurityState.Default
+        } else {
+            SecurityState.SuccessAuth(null)
+        }
+    }
 
     companion object {
         const val INTERNAL_ERROR_CODE = -1
