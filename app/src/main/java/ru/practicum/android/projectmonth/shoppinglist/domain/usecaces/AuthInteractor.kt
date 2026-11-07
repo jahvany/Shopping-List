@@ -9,5 +9,7 @@ interface AuthInteractor {
     fun authenticate(loginCredentials: LoginCredentials) : Flow<SecurityState>
     fun register(registerCredentials: RegisterCredentials) : Flow<SecurityState>
     fun recoveryPassword(email: String) : Flow<SecurityState>
+    fun logout()
     suspend fun currentUser(): String
+    suspend fun restoreSession(): SecurityState
 }

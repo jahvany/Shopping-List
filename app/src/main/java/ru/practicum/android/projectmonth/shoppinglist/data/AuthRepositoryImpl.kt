@@ -2,6 +2,7 @@ package ru.practicum.android.projectmonth.shoppinglist.data
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import java.net.ConnectException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,7 +21,14 @@ class AuthRepositoryImpl(
 ): AuthRepository {
 
     override suspend fun registerUser(registerCredentials: RegisterCredentials): SecurityState {
-        val response = authApiService.registerUser(authConverter.map(registerCredentials))
+        val response = try {
+            authApiService.registerUser(authConverter.map(registerCredentials))
+        } catch (_: ConnectException) {
+            return SecurityState.ErrorAuth(
+                message = "Не удалось подключиться к серверу",
+                errCode = INTERNAL_ERROR_CODE
+            )
+        }
         val responseCode = response.code()
 
         if(responseCode in 200..299) {
@@ -33,7 +41,14 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun authenticate(loginCredentials: LoginCredentials): SecurityState {
-        val response = authApiService.loginUser(authConverter.map(loginCredentials))
+        val response = try {
+            authApiService.loginUser(authConverter.map(loginCredentials))
+        } catch (_: ConnectException) {
+            return SecurityState.ErrorAuth(
+                message = "Не удалось подключиться к серверу",
+                errCode = INTERNAL_ERROR_CODE
+            )
+        }
         val responseCode = response.code()
 
         if(responseCode in 200..299) {
@@ -111,6 +126,23 @@ class AuthRepositoryImpl(
     }
         .flowOn(Dispatchers.IO)
 
+    override fun logout() {
+        sharedPreferences.edit {
+            remove(ACCESS_TOKEN)
+            remove(REFRESH_TOKEN)
+            remove(LOGIN)
+        }
+    }
+
+    override suspend fun restoreSession(): SecurityState {
+        val refreshToken = sharedPreferences.getString(REFRESH_TOKEN, null)
+
+        return if (refreshToken == null) {
+            SecurityState.Default
+        } else {
+            SecurityState.SuccessAuth(null)
+        }
+    }
 
     companion object {
         const val INTERNAL_ERROR_CODE = -1
