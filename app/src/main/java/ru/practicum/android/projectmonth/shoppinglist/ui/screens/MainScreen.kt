@@ -61,9 +61,7 @@ fun MainScreen(
                     onClick = {
                         viewModel.logout()
                         navController.navigate(Destination.Auth.route) {
-                            popUpTo(Destination.Main.route) {
-                                inclusive = true
-                            }
+                            popUpTo(Destination.Main.route)
                         }
                     }
                 ) {

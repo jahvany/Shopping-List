@@ -61,7 +61,9 @@ fun LoginScreen(
 
     LaunchedEffect(state) {
         if (state is UiSecurityState.Success) {
-            navController.navigate(Destination.ShoppingLists.route)
+            navController.navigate(Destination.ShoppingLists.route) {
+                popUpTo(Destination.Main.route)
+            }
             viewModel.refreshStates()
         }
     }
