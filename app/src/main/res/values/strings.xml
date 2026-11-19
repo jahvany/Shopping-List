@@ -47,7 +47,7 @@
     <string name="enter_in_shoppinglist">Войти</string>
     <string name="password_recovery">Не помню пароль</string>
     <string name="repeat_password">Повторите пароль</string>
-    <string name="register_password_warning">Пароль должен быть длиннее 6-ти символов</string>
+    <string name="register_password_warning">Минимальная длина пароля: 7 символов</string>
     <string name="passwords_not_equals_warning">Введенные пароли не совпадают</string>
     <string name="email_wrong_format">Не верный формат email</string>
     <string name="clear_text">очистить</string>

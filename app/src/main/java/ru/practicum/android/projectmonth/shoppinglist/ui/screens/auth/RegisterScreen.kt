@@ -136,7 +136,7 @@ fun RegisterScreen(
 
         val isValid = email.isNotEmpty() &&
                 viewModel.isValidEmail(email) &&
-                password.length >= 6 &&
+                password.length >= 7 &&
                 repeatPassword.isNotEmpty() &&
                 password == repeatPassword
 

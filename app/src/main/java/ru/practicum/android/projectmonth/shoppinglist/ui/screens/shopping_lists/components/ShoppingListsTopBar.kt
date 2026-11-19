@@ -45,7 +45,8 @@ fun ShoppingListsTopBar(
     onSearchQueryChange: (String) -> Unit = {},
     onSearchClick: () -> Unit = {},
     onSearchClose: () -> Unit = {},
-    onDeleteAllClick: () -> Unit = {}
+    onDeleteAllClick: () -> Unit = {},
+    onSwitchThemeClick: () -> Unit = {}
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -134,7 +135,7 @@ fun ShoppingListsTopBar(
                 )
                 TopBarButton(
                     iconResId = R.drawable.ic_night_theme,
-                    enabled = false
+                    onClick = onSwitchThemeClick
                 )
             }
         },

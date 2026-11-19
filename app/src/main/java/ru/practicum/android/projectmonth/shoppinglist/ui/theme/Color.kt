@@ -19,6 +19,11 @@ val IconCircleBg = Color(0xFFEEE0D5)
 val DropdownColor = Color(0xFFFAEBE0)
 
 
+val NightBackground = Color(0xFF18110C)
+val NightBrownSurface = Color(0xFF302921)
+val LightBrown = Color(0xFFE0C1A3)
+val NightBrownElements = Color(0xFFBE8543)
+
 val Purple80 = Color(0xFFD0BCFF)
 val WarnRed = Color(0xFFFF0000)
 val PurpleGrey80 = Color(0xFFCCC2DC)

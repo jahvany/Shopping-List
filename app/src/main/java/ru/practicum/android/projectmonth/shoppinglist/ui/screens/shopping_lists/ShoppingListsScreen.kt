@@ -99,6 +99,9 @@ fun ShoppingListsScreen(
                     if (allLists.isNotEmpty()) {
                         showDeleteAllDialog = true
                     }
+                },
+                onSwitchThemeClick = {
+
                 }
             )
         },
