@@ -45,7 +45,6 @@ import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.compon
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.ProductsTopBar
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.products_list.ProductsList
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.DeleteConfirmationDialog
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.BottomSheetPeach
 
 // Используется только здесь, нет необходимости выносить в тему
 val productListDividerColor = Color(0xFFCAC4D0)
@@ -145,7 +144,6 @@ fun ProductsScreen(
                 )
             },
             scaffoldState = scaffoldState,
-            sheetContainerColor = BottomSheetPeach,
             sheetPeekHeight = 0.dp
         ) { innerPadding ->
 

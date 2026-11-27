@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ru.practicum.android.projectmonth.shoppinglist.domain.ThemeRepository
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.ShoppingList
 import ru.practicum.android.projectmonth.shoppinglist.domain.usecaces.AuthInteractor
 import ru.practicum.android.projectmonth.shoppinglist.domain.usecaces.ProductInteractor
@@ -21,7 +23,8 @@ private const val DEFAULT_SHOPPING_LIST_ICON = "ic_shopping_list_default"
 class ShoppingListsViewModel(
     private val shoppingListInteractor: ShoppingListInteractor,
     private val productInteractor: ProductInteractor,
-    private val authInteractor: AuthInteractor
+    private val authInteractor: AuthInteractor,
+    private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf<ShoppingListsState>(ShoppingListsState.Empty)
@@ -33,6 +36,8 @@ class ShoppingListsViewModel(
     private val _isSearchActive = MutableStateFlow(false)
     val isSearchActive: StateFlow<Boolean> = _isSearchActive.asStateFlow()
 
+    val darkModeEnabled: Flow<Boolean> = themeRepository.darkModeEnabled
+
     init {
         getShoppingLists()
     }
@@ -40,10 +45,11 @@ class ShoppingListsViewModel(
     fun getShoppingLists() {
         viewModelScope.launch {
             val result = shoppingListInteractor.getAllShoppingLists()
-            if (result.isNotEmpty()) {
-                uiState = ShoppingListsState.Content(result)
+
+            uiState = if (result.isNotEmpty()) {
+                ShoppingListsState.Content(result)
             } else {
-                uiState = ShoppingListsState.Empty
+                ShoppingListsState.Empty
             }
         }
     }
@@ -142,6 +148,12 @@ class ShoppingListsViewModel(
             }
 
             getShoppingLists()
+        }
+    }
+
+    fun switchTheme() {
+        viewModelScope.launch {
+            themeRepository.switchTheme()
         }
     }
 }

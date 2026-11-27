@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.ui.components.CustomTextInput
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownSurface
 
 @Composable
 fun NewShoppingListDialog(
@@ -62,7 +61,7 @@ fun NewShoppingListDialog(
                 )
             }
         },
-        containerColor = LightBrownSurface
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     )
 }
 

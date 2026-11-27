@@ -5,7 +5,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
 
 @Composable
 fun TopBarButton(
@@ -19,8 +18,7 @@ fun TopBarButton(
     ) {
         Icon(
             painter = painterResource(iconResId),
-            contentDescription = null,
-            tint = DarkText
+            contentDescription = null
         )
     }
 }

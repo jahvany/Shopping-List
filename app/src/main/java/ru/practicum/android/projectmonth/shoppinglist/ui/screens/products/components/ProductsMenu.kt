@@ -2,7 +2,6 @@ package ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.compo
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,11 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.SortType
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.BottomSheetPeach
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DropdownColor
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.RegularBrown
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,8 +46,7 @@ fun ProductsMenu(
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        dragHandle = { BottomSheetDefaults.DragHandle() },
-        containerColor = BottomSheetPeach
+        dragHandle = { BottomSheetDefaults.DragHandle() }
     ) {
         Column(modifier = Modifier.padding(bottom = 16.dp)) {
 
@@ -78,7 +71,6 @@ fun ProductsMenu(
                 DropdownMenu(
                     expanded = isSortMenuExpanded,
                     onDismissRequest = { isSortMenuExpanded = false },
-                    modifier = Modifier.background(color = DropdownColor)
                 ) {
                     // Вариант: По алфавиту
                     SortTypeMenuItem(
@@ -150,10 +142,10 @@ fun ProductsMenuItem(
         },
         supportingContent = supportingContent,
         colors = ListItemDefaults.colors(
-            containerColor = BottomSheetPeach,
-            headlineColor = DarkText,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            headlineColor = MaterialTheme.colorScheme.onSurface,
             supportingColor = Color(0xFF4A4459),
-            leadingIconColor = MediumDarkText
+            leadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         modifier = Modifier.clickable {
             onClick()
@@ -189,9 +181,8 @@ fun SortTypeMenuItem(
         },
         onClick = onClick,
         colors = MenuDefaults.itemColors(
-            textColor = DarkText,
-            leadingIconColor = MediumDarkText,
-            trailingIconColor = RegularBrown
+            textColor = MaterialTheme.colorScheme.onSurface,
+            leadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     )
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.Product
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.productListDividerColor
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -67,7 +67,7 @@ fun ProductsList(
                                 .align(Alignment.CenterEnd)
                                 .padding(end = 16.dp)
                                 .draggableHandle(),
-                            tint = MediumDarkText
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                     }

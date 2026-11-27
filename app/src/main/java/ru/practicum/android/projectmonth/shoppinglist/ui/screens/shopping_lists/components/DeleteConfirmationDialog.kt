@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownElements
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownSurface
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.RegularBrown
 
 @Composable
@@ -33,7 +31,7 @@ fun DeleteConfirmationDialog(
         icon = {
             Icon(
                 painter = painterResource(R.drawable.ic_attention),
-                tint = MediumDarkText,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 contentDescription = stringResource(R.string.attention_icon)
             )
         },
@@ -41,7 +39,7 @@ fun DeleteConfirmationDialog(
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineLarge,
-                color = DarkText,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
         },
@@ -80,7 +78,7 @@ fun DeleteConfirmationDialog(
                 )
             }
         },
-        containerColor = LightBrownSurface
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     )
 }
 

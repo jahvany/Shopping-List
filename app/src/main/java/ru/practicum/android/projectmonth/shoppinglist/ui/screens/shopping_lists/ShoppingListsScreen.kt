@@ -2,38 +2,21 @@ package ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -51,9 +34,6 @@ import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.RenameShoppingListDialog
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.ShoppingListsTopBar
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.shopping_lists.components.SwipeableShoppingListItem
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBackground
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownElements
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 
 @Composable
 fun ShoppingListsScreen(
@@ -63,6 +43,10 @@ fun ShoppingListsScreen(
     val uiState = viewModel.uiState
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val isSearchActive by viewModel.isSearchActive.collectAsStateWithLifecycle()
+
+    val darkModeEnabled by viewModel.darkModeEnabled.collectAsStateWithLifecycle(
+        initialValue = false
+    )
 
     var showAddingDialog by remember { mutableStateOf(false) }
     var showDeleteAllDialog by remember { mutableStateOf(false) }
@@ -89,9 +73,9 @@ fun ShoppingListsScreen(
     Scaffold(
         topBar = {
             ShoppingListsTopBar(
-                navController = navController,
                 isSearchActive = isSearchActive,
                 searchQuery = searchQuery,
+                darkModeEnabled = darkModeEnabled,
                 onSearchQueryChange = { viewModel.updateSearchQuery(it) },
                 onSearchClick = { viewModel.setIsSearchActive(true) },
                 onSearchClose = { viewModel.setIsSearchActive(false) },
@@ -99,6 +83,9 @@ fun ShoppingListsScreen(
                     if (allLists.isNotEmpty()) {
                         showDeleteAllDialog = true
                     }
+                },
+                onSwitchThemeClick = {
+                    viewModel.switchTheme()
                 }
             )
         },
@@ -242,77 +229,5 @@ fun ShoppingListsScreen(
                 }
             )
         }
-    }
-}
-
-@Composable
-fun ShoppingListsItem(
-    item: ShoppingList,
-    onClick: (ShoppingList) -> Unit,
-    onIconLongClick: (ShoppingList) -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val resources = LocalResources.current
-
-    val iconResId = remember(resources, item.iconRes) {
-        resources.getIdentifier(
-            item.iconRes,
-            "drawable",
-            context.packageName
-        ).takeIf { it != 0 } ?: R.drawable.ic_shopping_list_default
-    }
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(16.dp),
-                clip = false
-            )
-            .border(
-                width = 1.dp,
-                color = Color(0xFFD0D0D0),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .background(
-                color = LightBackground,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(12.dp)
-            .clickable {
-                onClick(item)
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(
-                    color = LightBrownElements,
-                    shape = CircleShape
-                )
-                .combinedClickable(
-                    onClick = { },
-                    onLongClick = { onIconLongClick(item) }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(iconResId),
-                contentDescription = null,
-                tint = MediumDarkText,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Text(
-            text = item.name,
-            style = MaterialTheme.typography.labelLarge,
-            color = MediumDarkText
-        )
     }
 }

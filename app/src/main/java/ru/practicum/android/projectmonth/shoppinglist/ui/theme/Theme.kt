@@ -5,45 +5,61 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-
-private val DarkColorScheme = darkColorScheme(
-    primary = SecondaryBrown,
-    onPrimary = DarkBackground,
-    background = DarkBackground,
-    surface = DarkBackground,
-    onSurface = LightText,
-    onBackground = DarkOnBackGround,
-    primaryContainer = DarkLightBrownElements
-)
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import org.koin.compose.koinInject
+import ru.practicum.android.projectmonth.shoppinglist.domain.ThemeRepository
 
 private val LightColorScheme = lightColorScheme(
     primary = RegularBrown,
     onPrimary = LightBackground,
     background = LightBackground,
+    onBackground = DarkOnBackground,
     surface = LightBackground,
+    surfaceVariant = LightBrownSurface,
+    surfaceContainer = LightDropdownColor,
+    surfaceContainerLow = BottomSheetPeach,
     onSurface = DarkText,
-    onBackground = LightOnBackGround,
-    primaryContainer = LightBrownElements
+    onSurfaceVariant = MediumDarkText,
+    primaryContainer = LightBrownElements,
+    secondaryContainer = LightBrownElementsSecondary
+)
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
+private val DarkColorScheme = darkColorScheme(
+    primary = LightBrown,
+    onPrimary = NightBackground,
+    background = NightBackground,
+    onBackground = LightOnBackground,
+    surface = NightBackground,
+    surfaceVariant = NightBrownSurface,
+    surfaceContainer = NightDropdownColor,
+    surfaceContainerLow = DarkText,
+    onSurface = LightText,
+    onSurfaceVariant = MediumLightText,
+    primaryContainer = NightBrownElements,
+    secondaryContainer = NightBrownElementsSecondary
 )
 
 @Composable
 fun ShoppingListTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeRepository: ThemeRepository = koinInject(),
     content: @Composable () -> Unit
 ) {
 
+    val darkModeEnabled by themeRepository.darkModeEnabled.collectAsState(
+        initial = isSystemInDarkTheme()
+    )
+
     val colorScheme = when {
-        darkTheme -> DarkColorScheme
+//        Динамические цвета (на всякий случай)
+//        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//            if (darkModeEnabled) {
+//                dynamicDarkColorScheme(LocalContext.current)
+//            } else {
+//                dynamicLightColorScheme(LocalContext.current)
+//            }
+//        }
+        darkModeEnabled -> DarkColorScheme
         else -> LightColorScheme
     }
 

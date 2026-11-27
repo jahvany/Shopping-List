@@ -13,8 +13,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.Product
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.trimInteger
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 
 @Composable
 fun ProductItem(
@@ -41,13 +39,12 @@ fun ProductItem(
                     )
                 } else {
                     MaterialTheme.typography.labelLarge
-                },
-                color = DarkText
+                }
             )
             Text(
                 text = "${trimInteger(item.number)} ${item.measureUnit}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MediumDarkText
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
