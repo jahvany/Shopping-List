@@ -1,6 +1,10 @@
 package ru.practicum.android.projectmonth.shoppinglist.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
@@ -42,6 +46,15 @@ val dataModule = module {
     single {
         androidContext()
             .getSharedPreferences("shopinglist_preferences", Context.MODE_PRIVATE)
+    }
+
+    // DataStore
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.create(
+            produceFile = {
+                androidContext().preferencesDataStoreFile("user_settings")
+            }
+        )
     }
 
     // Gson
