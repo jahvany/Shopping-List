@@ -47,10 +47,6 @@ import androidx.compose.ui.window.PopupProperties
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.Product
 import ru.practicum.android.projectmonth.shoppinglist.ui.components.CustomTextInput
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.BottomSheetPeach
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DropdownColor
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 import kotlin.String
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,7 +103,7 @@ fun NewProductBottomSheet(
     }
 
     Surface(
-        color = BottomSheetPeach,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
@@ -188,7 +184,7 @@ fun NewProductBottomSheet(
                                 text = stringResource(R.string.measure_placeholder),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                color = MediumDarkText
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         modifier = Modifier.menuAnchor(
@@ -197,8 +193,7 @@ fun NewProductBottomSheet(
                     )
                     ExposedDropdownMenu(
                         expanded = isDropdownExpanded,
-                        onDismissRequest = { isDropdownExpanded = false },
-                        containerColor = DropdownColor
+                        onDismissRequest = { isDropdownExpanded = false }
                     ) {
                         measureUnits.forEach { unit ->
                             DropdownMenuItem(
@@ -264,8 +259,7 @@ fun SuggestionPopup(
             modifier = Modifier
                 .fillMaxWidth(0.5f),
             shape = RoundedCornerShape(4.dp),
-            shadowElevation = 4.dp,
-            color = DropdownColor
+            shadowElevation = 4.dp
         ) {
             LazyColumn(modifier = Modifier.heightIn(max = 200.dp)) {
                 items(items = suggestions) { suggestion ->
@@ -277,7 +271,6 @@ fun SuggestionPopup(
                         Text(
                             text = suggestion,
                             style = MaterialTheme.typography.labelLarge,
-                            color = DarkText,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -288,7 +281,6 @@ fun SuggestionPopup(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun NewProductBottomSheetPreview() {

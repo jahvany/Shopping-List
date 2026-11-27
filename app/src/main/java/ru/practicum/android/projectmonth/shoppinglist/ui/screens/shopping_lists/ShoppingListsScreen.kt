@@ -69,7 +69,6 @@ fun ShoppingListsScreen(
     Scaffold(
         topBar = {
             ShoppingListsTopBar(
-                navController = navController,
                 isSearchActive = isSearchActive,
                 searchQuery = searchQuery,
                 onSearchQueryChange = { viewModel.updateSearchQuery(it) },

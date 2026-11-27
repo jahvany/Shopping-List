@@ -2,9 +2,9 @@ package ru.practicum.android.projectmonth.shoppinglist.ui.screens.auth.component
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.WarnRed
 
 @Composable
 fun WarnTextField(
@@ -13,7 +13,7 @@ fun WarnTextField(
     Text(
         text = notificationText,
         fontSize = 12.sp,
-        color = WarnRed
+        color = Color.Red
     )
 
 }

@@ -14,8 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.ShoppingList
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownSurface
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 
 @Composable
 fun RenameShoppingListDialog(
@@ -42,7 +40,7 @@ fun RenameShoppingListDialog(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.list_name_hint),
-                        color = MediumDarkText
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 singleLine = true
@@ -68,7 +66,7 @@ fun RenameShoppingListDialog(
                 )
             }
         },
-        containerColor = LightBrownSurface
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     )
 }
 

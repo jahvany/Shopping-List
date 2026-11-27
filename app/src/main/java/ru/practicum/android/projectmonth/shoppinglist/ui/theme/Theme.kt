@@ -1,16 +1,12 @@
 package ru.practicum.android.projectmonth.shoppinglist.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import org.koin.compose.koinInject
 import ru.practicum.android.projectmonth.shoppinglist.domain.ThemeRepository
 
@@ -18,20 +14,30 @@ private val LightColorScheme = lightColorScheme(
     primary = RegularBrown,
     onPrimary = LightBackground,
     background = LightBackground,
+    onBackground = DarkOnBackground,
     surface = LightBackground,
+    surfaceVariant = LightBrownSurface,
+    surfaceContainer = LightDropdownColor,
+    surfaceContainerLow = BottomSheetPeach,
     onSurface = DarkText,
-    onBackground = LightOnBackGround,
-    primaryContainer = LightBrownElements
+    onSurfaceVariant = MediumDarkText,
+    primaryContainer = LightBrownElements,
+    secondaryContainer = LightBrownElementsSecondary
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = LightBrown,
     onPrimary = NightBackground,
     background = NightBackground,
+    onBackground = LightOnBackground,
     surface = NightBackground,
+    surfaceVariant = NightBrownSurface,
+    surfaceContainer = NightDropdownColor,
+    surfaceContainerLow = DarkText,
     onSurface = LightText,
-    onBackground = DarkOnBackGround,
-    primaryContainer = NightBrownElements
+    onSurfaceVariant = MediumLightText,
+    primaryContainer = NightBrownElements,
+    secondaryContainer = NightBrownElementsSecondary
 )
 
 @Composable
@@ -45,6 +51,7 @@ fun ShoppingListTheme(
     )
 
     val colorScheme = when {
+//        Динамические цвета (на всякий случай)
 //        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 //            if (darkModeEnabled) {
 //                dynamicDarkColorScheme(LocalContext.current)

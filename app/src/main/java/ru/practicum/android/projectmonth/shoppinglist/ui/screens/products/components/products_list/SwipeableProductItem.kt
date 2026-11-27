@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.Product
 import ru.practicum.android.projectmonth.shoppinglist.ui.screens.products.components.RoundIconButton
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBackground
 import kotlin.math.abs
 
 @Composable
@@ -110,7 +110,7 @@ fun SwipeableProductItem(
                         onCheckedChange(!item.checked)
                     }
                 }
-                .background(color = LightBackground)
+                .background(color = MaterialTheme.colorScheme.surface)
         )
     }
 }

@@ -27,19 +27,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.ui.components.TopBarButton
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.DarkText
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBackground
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownSurface
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListsTopBar(
-    navController: NavController,
     isSearchActive: Boolean = false,
     searchQuery: String = "",
     onSearchQueryChange: (String) -> Unit = {},
@@ -53,7 +49,7 @@ fun ShoppingListsTopBar(
 
     LaunchedEffect(isSearchActive) {
         if (isSearchActive) {
-            delay(100)
+            delay(100.milliseconds)
             focusRequester.requestFocus()
             keyboardController?.show()
         }
@@ -68,7 +64,7 @@ fun ShoppingListsTopBar(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.search_hint),
-                            color = DarkText.copy(alpha = 0.5f)
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
                     },
                     trailingIcon = {
@@ -77,7 +73,7 @@ fun ShoppingListsTopBar(
                                 Icon(
                                     painter = painterResource(R.drawable.ic_clear),
                                     contentDescription = stringResource(R.string.clear_text),
-                                    tint = DarkText
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         }
@@ -91,9 +87,9 @@ fun ShoppingListsTopBar(
                         .focusRequester(focusRequester),
                     shape = RoundedCornerShape(0.dp),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = LightBrownSurface,
-                        unfocusedContainerColor = LightBrownSurface,
-                        disabledContainerColor = LightBrownSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent
@@ -140,7 +136,11 @@ fun ShoppingListsTopBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (isSearchActive) LightBrownSurface else LightBackground
+            containerColor = if (isSearchActive) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
         ),
         windowInsets = WindowInsets(0, 0, 0, 0)
     )
@@ -149,7 +149,5 @@ fun ShoppingListsTopBar(
 @Preview(showBackground = true)
 @Composable
 fun ShoppingListsTopBarPreview() {
-    ShoppingListsTopBar(
-        navController = rememberNavController()
-    )
+    ShoppingListsTopBar()
 }

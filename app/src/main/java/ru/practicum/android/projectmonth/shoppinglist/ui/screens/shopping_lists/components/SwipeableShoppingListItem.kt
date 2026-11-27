@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,9 +43,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.projectmonth.shoppinglist.R
 import ru.practicum.android.projectmonth.shoppinglist.domain.models.ShoppingList
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.IconCircleBg
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBackground
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.LightBrownElements
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 import ru.practicum.android.projectmonth.shoppinglist.ui.theme.RegularBrown
 import kotlin.math.abs
 
@@ -58,7 +56,7 @@ fun SwipeableShoppingListItem(
     onIconLongClick: (ShoppingList) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    var offsetX by remember { mutableStateOf(0f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -170,7 +168,7 @@ fun SwipeableShoppingListItem(
                     shape = RoundedCornerShape(16.dp)
                 )
                 .background(
-                    color = LightBackground,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(12.dp)
@@ -227,7 +225,7 @@ fun SwipeableShoppingListItem(
                 modifier = Modifier
                     .size(40.dp)
                     .background(
-                        color = LightBrownElements,
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                         shape = CircleShape
                     )
                     .combinedClickable(
@@ -239,7 +237,6 @@ fun SwipeableShoppingListItem(
                 Icon(
                     painter = painterResource(iconResId),
                     contentDescription = null,
-                    tint = MediumDarkText,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -249,7 +246,7 @@ fun SwipeableShoppingListItem(
             Text(
                 text = item.name,
                 style = MaterialTheme.typography.labelLarge,
-                color = MediumDarkText
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

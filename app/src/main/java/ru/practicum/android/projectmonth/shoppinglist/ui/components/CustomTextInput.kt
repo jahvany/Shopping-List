@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.practicum.android.projectmonth.shoppinglist.R
-import ru.practicum.android.projectmonth.shoppinglist.ui.theme.MediumDarkText
 
 val defaultTextFieldHeight = 64.dp
 
@@ -51,7 +51,7 @@ fun CustomTextInput(
         placeholder = {
             Text(
                 text = stringResource(placeholderResId),
-                color = MediumDarkText
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         singleLine = true,
@@ -68,7 +68,7 @@ fun CustomTextInput(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_clear),
                             contentDescription = stringResource(R.string.clear_text),
-                            tint = MediumDarkText
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
