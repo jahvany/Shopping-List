@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,15 +36,10 @@ class ShoppingListsViewModel(
     private val _isSearchActive = MutableStateFlow(false)
     val isSearchActive: StateFlow<Boolean> = _isSearchActive.asStateFlow()
 
-    var darkModeEnabled by mutableStateOf<Boolean>(false)
-        private set
+    val darkModeEnabled: Flow<Boolean> = themeRepository.darkModeEnabled
 
     init {
         getShoppingLists()
-
-        viewModelScope.launch {
-            darkModeEnabled = themeRepository.darkModeEnabled.first()
-        }
     }
 
     fun getShoppingLists() {
@@ -157,7 +153,7 @@ class ShoppingListsViewModel(
 
     fun switchTheme() {
         viewModelScope.launch {
-            themeRepository.switchTheme(!darkModeEnabled)
+            themeRepository.switchTheme()
         }
     }
 }

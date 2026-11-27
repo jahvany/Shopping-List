@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ThemeRepository {
     val darkModeEnabled: Flow<Boolean>
-    suspend fun switchTheme(darkModeEnabled: Boolean)
+    suspend fun switchTheme()
 }

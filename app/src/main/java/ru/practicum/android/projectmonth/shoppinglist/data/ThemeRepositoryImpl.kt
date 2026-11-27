@@ -18,9 +18,9 @@ class ThemeRepositoryImpl(private val dataStore: DataStore<Preferences>) : Theme
             preferences[DARK_MODE_KEY] ?: false
         }
 
-    override suspend fun switchTheme(darkModeEnabled: Boolean) {
+    override suspend fun switchTheme() {
         dataStore.edit { preferences ->
-            preferences[DARK_MODE_KEY] = darkModeEnabled
+            preferences[DARK_MODE_KEY] = !(preferences[DARK_MODE_KEY] ?: false)
         }
     }
 }
