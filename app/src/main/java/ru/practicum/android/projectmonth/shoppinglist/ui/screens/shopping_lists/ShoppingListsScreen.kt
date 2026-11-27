@@ -44,6 +44,10 @@ fun ShoppingListsScreen(
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val isSearchActive by viewModel.isSearchActive.collectAsStateWithLifecycle()
 
+    val darkModeEnabled by viewModel.darkModeEnabled.collectAsStateWithLifecycle(
+        initialValue = false
+    )
+
     var showAddingDialog by remember { mutableStateOf(false) }
     var showDeleteAllDialog by remember { mutableStateOf(false) }
     var showDeleteListDialog by remember { mutableStateOf<ShoppingList?>(null) }
@@ -71,6 +75,7 @@ fun ShoppingListsScreen(
             ShoppingListsTopBar(
                 isSearchActive = isSearchActive,
                 searchQuery = searchQuery,
+                darkModeEnabled = darkModeEnabled,
                 onSearchQueryChange = { viewModel.updateSearchQuery(it) },
                 onSearchClick = { viewModel.setIsSearchActive(true) },
                 onSearchClose = { viewModel.setIsSearchActive(false) },

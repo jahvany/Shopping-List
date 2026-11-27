@@ -38,6 +38,7 @@ import kotlin.time.Duration.Companion.milliseconds
 fun ShoppingListsTopBar(
     isSearchActive: Boolean = false,
     searchQuery: String = "",
+    darkModeEnabled: Boolean = false,
     onSearchQueryChange: (String) -> Unit = {},
     onSearchClick: () -> Unit = {},
     onSearchClose: () -> Unit = {},
@@ -130,7 +131,11 @@ fun ShoppingListsTopBar(
                     onClick = onDeleteAllClick
                 )
                 TopBarButton(
-                    iconResId = R.drawable.ic_night_theme,
+                    iconResId = if (darkModeEnabled) {
+                        R.drawable.ic_light_theme
+                    } else {
+                        R.drawable.ic_night_theme
+                    },
                     onClick = onSwitchThemeClick
                 )
             }
